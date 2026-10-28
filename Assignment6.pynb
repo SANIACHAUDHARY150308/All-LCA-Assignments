@@ -1,0 +1,39 @@
+
+import pandas as pd
+from google.colab import files
+
+uploaded = files.upload()
+
+filename = list(uploaded.keys())[0]
+
+df = pd.read_csv(filename)
+
+print(df)
+print("First five rows:")
+print(df.head())
+
+print("\nDataset information:")
+df.info()
+
+print("\nStatistical description:")
+print(df.describe())
+print(df.isnull().sum())
+
+df['Marks'] = df['Marks'].fillna(df['Marks'].mean())
+df['Place'] = df['Place'].fillna('Unknown')
+
+print(df)
+print("Duplicate records:")
+print(df.duplicated())
+
+df = df.drop_duplicates()
+
+print("\nAfter removing duplicates:")
+print(df)
+df = df.drop(columns=['Place'])
+
+print(df)
+print(df.loc[df['Marks'] > 85])
+df.to_csv('cleaned_data.csv', index=False)
+
+print("Cleaned CSV file saved successfully!")
